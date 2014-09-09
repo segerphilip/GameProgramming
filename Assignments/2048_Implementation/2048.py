@@ -4,7 +4,7 @@ def start():
 	move()
 
 def move():
-	move = raw_input('Left, right, up, or down?')
+	move = raw_input('Left, right, up, or down? Use the arrow keys! ')
 	if move == '\x1b[A':
 		print 'up'
 		boardMove('up')
@@ -30,7 +30,9 @@ def board():
 		grid.append([])
 		for column in range(4):
 			grid[row].append(0)
-	return
+	for row in range(4):
+		print grid[row]
+	return grid
 
 if __name__ == '__main__':
 	start()
