@@ -2,29 +2,35 @@ import random
 
 def start():
 	print '--------------------------------\n            2048\n--------------------------------'
+	print 'Available commands:\nleft, right, up, down, quit, new'
 	count = 0
 	grid = []
 	board(grid, count)
 	move(grid, count)
 
 def move(grid, count):
-	randomPoint(grid, count)
-	move = raw_input('Left, right, up, or down? Use the arrow keys! ')
+	move = raw_input('\n')
 	if move == '\x1b[A' or move == 'up':
-		boardMove('up', grid)
+		randomPoint(grid, count)
+		boardMove('up', grid, count)
 	elif move == '\x1b[B' or move == 'down':
-		boardMove('down', grid)
+		randomPoint(grid, count)
+		boardMove('down', grid, count)
 	elif move == '\x1b[C' or move == 'right':
-		boardMove('right', grid)
+		randomPoint(grid, count)
+		boardMove('right', grid, count)
 	elif move == '\x1b[D' or move == 'left':
-		boardMove('left', grid)
-	elif move == 'q':
+		randomPoint(grid, count)
+		boardMove('left', grid, count)
+	elif move == 'q' or move == 'quit':
 		return
+	elif move == 'n' or move == 'new':
+		return start()
 	else:
 		print "That's not a valid move"
 		return move(grid, count)
 
-def boardMove(direction, grid):
+def boardMove(direction, grid, count):
 	if direction == 'up':
 		i = 0
 		for j in range(0,4):
@@ -39,6 +45,7 @@ def boardMove(direction, grid):
 					while grid[i+2][j]==0:
 						grid[i+2][j]=grid[i+3][j]
 						grid[i+3][j]=0
+		i = 0
 		for j in range(0,4):
 			if grid[i][j]==grid[i+1][j]:
 				grid[i][j]=grid[i][j]+grid[i+1][j]
@@ -72,6 +79,7 @@ def boardMove(direction, grid):
 					while grid[i+1][j]==0:
 						grid[i+1][j]=grid[i][j]
 						grid[i][j]=0
+		i = 0
 		for j in range(0,4):
 			if grid[i+3][j]==grid[i+2][j]:
 				grid[i+3][j]=grid[i+3][j] + grid[i+2][j]
@@ -104,6 +112,7 @@ def boardMove(direction, grid):
 					while grid[i][j+2]==0:
 						grid[i][j+2]=grid[i][j+3]
 						grid[i][j+3]=0
+		j = 0
 		for i in range(0,4):
 			if grid[i][j]==grid[i][j+1]:
 				grid[i][j]=grid[i][j]+grid[i][j+1]
@@ -136,6 +145,7 @@ def boardMove(direction, grid):
 					while grid[i][j+1]==0:
 						grid[i][j+1]=grid[i][j]
 						grid[i][j]=0
+		j = 0
 		for i in range(0,4):
 			if grid[i][j+3]==grid[i][j+2]:
 				grid[i][j+3]=grid[i][j+3] + grid[i][j+2]
@@ -150,7 +160,7 @@ def boardMove(direction, grid):
 				grid[i][j+1]=grid[i][j+1]+grid[i][j]
 				grid[i][j]=0
 	printGrid(grid)
-	return move(grid)
+	return move(grid, count)
 
 def board(grid, count):
 	for row in range(4):
@@ -182,7 +192,7 @@ def printGrid(grid):
 
 def gameOver():
 	print 'Game Over'
-	return
+	return 'lol'
 
 if __name__ == '__main__':
 	start()
