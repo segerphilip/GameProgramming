@@ -2,12 +2,13 @@ import random
 
 def start():
 	print '--------------------------------\n            2048\n--------------------------------'
+	count = 0
 	grid = []
-	board(grid)
-	move(grid)
+	board(grid, count)
+	move(grid, count)
 
-def move(grid):
-	randomPoint(grid)
+def move(grid, count):
+	randomPoint(grid, count)
 	move = raw_input('Left, right, up, or down? Use the arrow keys! ')
 	if move == '\x1b[A' or move == 'up':
 		boardMove('up', grid)
@@ -21,10 +22,9 @@ def move(grid):
 		return
 	else:
 		print "That's not a valid move"
-		return move()
+		return move(grid, count)
 
 def boardMove(direction, grid):
-	print direction
 	if direction == 'up':
 		i = 0
 		for j in range(0,4):
@@ -152,7 +152,7 @@ def boardMove(direction, grid):
 	printGrid(grid)
 	return move(grid)
 
-def board(grid):
+def board(grid, count):
 	for row in range(4):
 		grid.append([])
 		for column in range(4):
@@ -160,18 +160,29 @@ def board(grid):
 	x = random.randint(0,3)
 	y = random.randint(0,3)
 	grid[x][y] = 2
-	randomPoint(grid)
+	randomPoint(grid, count)
 	printGrid(grid)
 	return grid
 
-def randomPoint(grid):
+def randomPoint(grid, count):
 	x = random.randint(0,3)
 	y = random.randint(0,3)
-	grid[x][y] = 2
+	if grid[x][y] == 0:
+		grid[x][y] = 2
+	else:
+		if count >= 100:
+			return gameOver()
+		else:
+			count += 1
+			return randomPoint(grid, count)
 
 def printGrid(grid):
 	for row in range(4):
 		print grid[row]
+
+def gameOver():
+	print 'Game Over'
+	return
 
 if __name__ == '__main__':
 	start()
