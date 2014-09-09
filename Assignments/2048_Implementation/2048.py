@@ -7,14 +7,15 @@ def start():
 	move(grid)
 
 def move(grid):
+	randomPoint(grid)
 	move = raw_input('Left, right, up, or down? Use the arrow keys! ')
-	if move == '\x1b[A':
+	if move == '\x1b[A' or move == 'up':
 		boardMove('up', grid)
-	elif move == '\x1b[B':
+	elif move == '\x1b[B' or move == 'down':
 		boardMove('down', grid)
-	elif move == '\x1b[C':
+	elif move == '\x1b[C' or move == 'right':
 		boardMove('right', grid)
-	elif move == '\x1b[D':
+	elif move == '\x1b[D' or move == 'left':
 		boardMove('left', grid)
 	elif move == 'q':
 		return
@@ -38,22 +39,116 @@ def boardMove(direction, grid):
 					while grid[i+2][j]==0:
 						grid[i+2][j]=grid[i+3][j]
 						grid[i+3][j]=0
-
-
-
-
-
-
-	if direction == 'left':
-		for row in range(3):
-			for column in range(3):
-				if grid[row][column]!=0 or grid[row][column+1]!=0 or grid[row][column+2]!=0 or grid[row][column+3]!=0:
-					grid[row
-				elif grid[row][column+1] == grid[row][column]:
-					grid[row][column] = grid[row][column]*2
-					grid[row][column+1] = 0
-				else:
-					grid[row][column] = grid[row][column+1]
+		for j in range(0,4):
+			if grid[i][j]==grid[i+1][j]:
+				grid[i][j]=grid[i][j]+grid[i+1][j]
+				grid[i+1][j]=grid[i+2][j]
+				grid[i+2][j]=grid[i+3][j]
+				grid[i+3][j]=0
+			if grid[i+1][j]==grid[i+2][j]:
+				grid[i+1][j]=grid[i+1][j]+grid[i+2][j]
+				grid[i+2][j]=grid[i+3][j]
+				grid[i+3][j]=0
+			if grid[i+2][j]==grid[i+3][j]:
+				grid[i+2][j]=grid[i+2][j]+grid[i+3][j]
+				grid[i+3][j]=0
+	elif direction == 'down':
+		i = 0
+		for j in range(0,4):
+			if grid[i][j]!=0 or grid[i+1][j]!=0 or grid[i+2][j]!=0 or grid[i+3][j]!=0:
+				if grid[i+3][j]==0:
+					while grid[i+3][j]==0:
+						grid[i+3][j]=grid[i+2][j]
+						grid[i+2][j]=grid[i+1][j]
+						grid[i+1][j]=grid[i][j]
+						grid[i][j]=0
+				if grid[i+2][j]==0 and (grid[i+1][j]!=0 or grid[i][j]!=0):
+					while grid[i+2][j]==0:
+						grid[i+2][j]=grid[i+1][j]
+						grid[i+1][j]=grid[i][j]
+						grid[i][j]=0
+ 
+				if grid[i+1][j]==0 and grid[i][j]!=0:
+					while grid[i+1][j]==0:
+						grid[i+1][j]=grid[i][j]
+						grid[i][j]=0
+		for j in range(0,4):
+			if grid[i+3][j]==grid[i+2][j]:
+				grid[i+3][j]=grid[i+3][j] + grid[i+2][j]
+				grid[i+2][j]=grid[i+1][j]
+				grid[i+1][j]=grid[i][j]
+				grid[i][j]=0
+			if grid[i+2][j]==grid[i+1][j]:
+				grid[i+2][j]=grid[i+2][j]+grid[i+1][j]
+				grid[i+1][j]=grid[i][j]
+				grid[i][j]=0
+			if grid[i+1][j]==grid[i][j]:
+				grid[i+1][j]=grid[i+1][j]+grid[i][j]
+				grid[i][j]=0
+	elif direction == 'left':
+		j=0
+		for i in range(0,4):
+			if grid[i][j]!=0 or grid[i][j+1]!=0 or grid[i][j+2]!=0 or grid[i][j+3]!=0:
+				if grid[i][j]==0:
+					while grid[i][j]==0:
+						grid[i][j]=grid[i][j+1]
+						grid[i][j+1]=grid[i][j+2]
+						grid[i][j+2] = grid[i][j+3]
+						grid[i][j+3]=0
+				if grid[i][j+1]==0 and (grid[i][j+2]!=0 or grid[i][j+3]!=0):
+					while grid[i][j+1]==0:
+						grid[i][j+1]=grid[i][j+2]
+						grid[i][j+2]=grid[i][j+3]
+						grid[i][j+3]=0
+				if grid[i][j+2]==0 and (grid[i][j+3]!=0):
+					while grid[i][j+2]==0:
+						grid[i][j+2]=grid[i][j+3]
+						grid[i][j+3]=0
+		for i in range(0,4):
+			if grid[i][j]==grid[i][j+1]:
+				grid[i][j]=grid[i][j]+grid[i][j+1]
+				grid[i][j+1]=grid[i][j+2]
+				grid[i][j+2]=grid[i][j+3]
+				grid[i][j+3]=0
+			if grid[i][j+1]==grid[i][j+2]:
+				grid[i][j+1]=grid[i][j+1]+grid[i][j+2]
+				grid[i][j+2]=grid[i][j+3]
+				grid[i][j+3]=0
+			if grid[i][j+2]==grid[i][j+3]:
+				grid[i][j+2]=grid[i][j+2]+grid[i][j+3]
+				grid[i][j+3]=0
+	elif direction == 'right':
+		j=0
+		for i in range(0,4):
+			if grid[i][j]!=0 or grid[i][j+1]!=0 or grid[i][j+2]!=0 or grid[i][j+3]!=0:
+				if grid[i][j+3]==0:
+					while grid[i][j+3]==0:
+						grid[i][j+3]=grid[i][j+2]
+						grid[i][j+2]=grid[i][j+1]
+						grid[i][j+1]=grid[i][j]
+						grid[i][j]=0
+				if grid[i][j+2]==0 and (grid[i][j+1]!=0 or grid[i][j]!=0):
+					while grid[i][j+2]==0:
+						grid[i][j+2]=grid[i][j+1]
+						grid[i][j+1]=grid[i][j]
+						grid[i][j]=0
+				if grid[i][j+1]==0 and grid[i][j]!=0:
+					while grid[i][j+1]==0:
+						grid[i][j+1]=grid[i][j]
+						grid[i][j]=0
+		for i in range(0,4):
+			if grid[i][j+3]==grid[i][j+2]:
+				grid[i][j+3]=grid[i][j+3] + grid[i][j+2]
+				grid[i][j+2]=grid[i][j+1]
+				grid[i][j+1]=grid[i][j]
+				grid[i][j]=0
+			if grid[i][j+2]==grid[i][j+1]:
+				grid[i][j+2]=grid[i][j+2]+grid[i][j+1]
+				grid[i][j+1]=grid[i][j]
+				grid[i][j]=0
+			if grid[i][j+1]==grid[i][j]:
+				grid[i][j+1]=grid[i][j+1]+grid[i][j]
+				grid[i][j]=0
 	printGrid(grid)
 	return move(grid)
 
@@ -65,9 +160,14 @@ def board(grid):
 	x = random.randint(0,3)
 	y = random.randint(0,3)
 	grid[x][y] = 2
-	grid[y][x] = 2
+	randomPoint(grid)
 	printGrid(grid)
 	return grid
+
+def randomPoint(grid):
+	x = random.randint(0,3)
+	y = random.randint(0,3)
+	grid[x][y] = 2
 
 def printGrid(grid):
 	for row in range(4):
